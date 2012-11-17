@@ -17,15 +17,25 @@ subtest "コンポジションなしでのメソッド呼び出し" => sub{
     done_testing;
 };
 
-subtest "コンポジションでのメソッド呼び出し" => sub{
+subtest "コンポジションでのメソッド呼び出し; 間接呼び出し" => sub{
     my $test = HasObject->new;
 
     is($test->{'object'}->{'refCount'}, 0);
     my $res = $test->method;
     is($test->{'object'}->{'refCount'}, 1);
-    my $a = $res;
     ok($res eq "this is result");
+    is($test->{'object'}->{'refCount'}, 1); # ここが 2 だと評価時に呼ばれているはず
+    done_testing;
+};
+
+subtest "コンポジションでのメソッド呼び出し; 直呼び出し" => sub{
+    my $test = HasObject->new;
+
+    is($test->{'object'}->{'refCount'}, 0);
+    my $res = $test->{'object'}->method;
     is($test->{'object'}->{'refCount'}, 1);
+    ok($res eq "this is result");
+    is($test->{'object'}->{'refCount'}, 1); # ここが 2 だと評価時に呼ばれているはず
     done_testing;
 };
 
