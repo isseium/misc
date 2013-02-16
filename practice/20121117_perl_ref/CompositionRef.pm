@@ -22,7 +22,7 @@ sub method{
     my ($self) = @_;
 
     $self->{'refCount'}++;
-    return 'this is result';
+    return ['this is result'];
 }
 1;
 __END__
